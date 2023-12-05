@@ -51,6 +51,7 @@ class SketchPainter extends CustomPainter {
     paint.color = Colors.blue;
     paint.strokeCap = StrokeCap.round;
     paint.strokeWidth = 20;
+    paint.style = PaintingStyle.stroke;
     final path = Path();
     for (int i = 0; i < offsets.length - 1; i++) {
       path.moveTo(offsets[i].dx, offsets[i].dy);
