@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_canvas/views/canvas_options/cubit/color_cubit.dart';
 
 class DrawingCanvas extends StatefulWidget {
   const DrawingCanvas({super.key});
@@ -9,9 +11,9 @@ class DrawingCanvas extends StatefulWidget {
 
 class _DrawingCanvasState extends State<DrawingCanvas> {
   final List<Offset> offsets = [];
-
   @override
   Widget build(BuildContext context) {
+    final selectedColor = context.read<ColorCubit>().state;
     return MouseRegion(
       cursor: SystemMouseCursors.precise,
       child: Listener(
@@ -31,7 +33,10 @@ class _DrawingCanvasState extends State<DrawingCanvas> {
             width: double.maxFinite,
             height: double.maxFinite,
             child: CustomPaint(
-              painter: SketchPainter(offsets: offsets),
+              painter: SketchPainter(
+                offsets: offsets,
+                selectedColor: selectedColor,
+              ),
             ),
           ),
         ),
@@ -41,14 +46,18 @@ class _DrawingCanvasState extends State<DrawingCanvas> {
 }
 
 class SketchPainter extends CustomPainter {
-  const SketchPainter({required this.offsets});
+  const SketchPainter({
+    required this.offsets,
+    required this.selectedColor,
+  });
 
   final List<Offset> offsets;
+  final Color selectedColor;
 
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint();
-    paint.color = Colors.blue;
+    paint.color = selectedColor;
     paint.strokeCap = StrokeCap.round;
     paint.strokeWidth = 20;
     paint.style = PaintingStyle.stroke;
