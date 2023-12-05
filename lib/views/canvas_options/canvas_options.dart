@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_canvas/views/canvas_options/widgets/color_selector.dart';
 import 'package:flutter_canvas/views/canvas_options/widgets/tool_selector.dart';
 
 class CanvasOptions extends StatelessWidget {
@@ -15,7 +16,7 @@ class CanvasOptions extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           ToolSelector(),
-          Placeholder(),
+          ColorSelector(),
           Placeholder(),
         ],
       ),
