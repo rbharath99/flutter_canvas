@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_canvas/views/canvas_options/cubit/color_cubit.dart';
 
 import 'views/views.dart';
 
@@ -16,7 +18,14 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Whiteboard'),
+      home: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => ColorCubit(),
+          ),
+        ],
+        child: const MyHomePage(title: 'Flutter Whiteboard'),
+      ),
     );
   }
 }
