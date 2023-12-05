@@ -46,8 +46,8 @@ class SketchPainter extends CustomPainter {
     paint.color = Colors.blue;
     paint.strokeCap = StrokeCap.round;
     paint.strokeWidth = 20;
+    final path = Path();
     for (int i = 0; i < offsets.length - 1; i++) {
-      final path = Path();
       path.moveTo(offsets[i].dx, offsets[i].dy);
       path.quadraticBezierTo(
         offsets[i].dx,
@@ -55,8 +55,9 @@ class SketchPainter extends CustomPainter {
         (offsets[i].dx + offsets[i + 1].dx) / 2,
         (offsets[i].dy + offsets[i + 1].dy) / 2,
       );
-      canvas.drawPath(path, paint);
     }
+    path.close();
+    canvas.drawPath(path, paint);
   }
 
   @override
