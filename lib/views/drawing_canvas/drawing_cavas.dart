@@ -21,11 +21,13 @@ class _DrawingCanvasState extends State<DrawingCanvas> {
           });
         },
         onPanEnd: (DragEndDetails details) => setState(() {}),
-        child: SizedBox(
-          width: double.maxFinite,
-          height: double.maxFinite,
-          child: CustomPaint(
-            painter: SketchPainter(offsets: offsets),
+        child: RepaintBoundary(
+          child: SizedBox(
+            width: double.maxFinite,
+            height: double.maxFinite,
+            child: CustomPaint(
+              painter: SketchPainter(offsets: offsets),
+            ),
           ),
         ),
       ),
@@ -42,7 +44,8 @@ class SketchPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final paint = Paint();
     paint.color = Colors.blue;
-    paint.strokeWidth = 5.0;
+    paint.strokeCap = StrokeCap.round;
+    paint.strokeWidth = 20;
     for (int i = 0; i < offsets.length - 1; i++) {
       final path = Path();
       path.moveTo(offsets[i].dx, offsets[i].dy);
