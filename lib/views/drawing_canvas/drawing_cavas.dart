@@ -12,18 +12,21 @@ class _DrawingCanvasState extends State<DrawingCanvas> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onPanUpdate: (DragUpdateDetails details) {
-        setState(() {
-          offsets.add(details.globalPosition);
-        });
-      },
-      onPanEnd: (DragEndDetails details) => setState(() {}),
-      child: SizedBox(
-        width: double.maxFinite,
-        height: double.maxFinite,
-        child: CustomPaint(
-          painter: SketchPainter(offsets: offsets),
+    return MouseRegion(
+      cursor: SystemMouseCursors.precise,
+      child: GestureDetector(
+        onPanUpdate: (DragUpdateDetails details) {
+          setState(() {
+            offsets.add(details.globalPosition);
+          });
+        },
+        onPanEnd: (DragEndDetails details) => setState(() {}),
+        child: SizedBox(
+          width: double.maxFinite,
+          height: double.maxFinite,
+          child: CustomPaint(
+            painter: SketchPainter(offsets: offsets),
+          ),
         ),
       ),
     );
