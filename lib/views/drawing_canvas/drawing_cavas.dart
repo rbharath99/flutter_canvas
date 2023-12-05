@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_canvas/models/drawing.dart';
 import 'package:flutter_canvas/views/canvas_options/cubit/color_cubit.dart';
+import 'package:flutter_canvas/views/canvas_options/cubit/size_cubit.dart';
 
 class DrawingCanvas extends StatefulWidget {
   const DrawingCanvas({super.key});
@@ -16,6 +17,7 @@ class _DrawingCanvasState extends State<DrawingCanvas> {
   @override
   Widget build(BuildContext context) {
     final selectedColor = context.read<ColorCubit>().state;
+    final toolSize = context.select((SizeCubit sizeCubit) => sizeCubit.state);
     return MouseRegion(
       cursor: SystemMouseCursors.precise,
       child: Listener(
@@ -27,7 +29,7 @@ class _DrawingCanvasState extends State<DrawingCanvas> {
                 paint: Paint()
                   ..color = selectedColor
                   ..isAntiAlias = true
-                  ..strokeWidth = 20
+                  ..strokeWidth = toolSize.strokeSize
                   ..strokeCap = StrokeCap.round
                   ..style = PaintingStyle.stroke,
               ),
@@ -42,7 +44,7 @@ class _DrawingCanvasState extends State<DrawingCanvas> {
                 paint: Paint()
                   ..color = selectedColor
                   ..isAntiAlias = true
-                  ..strokeWidth = 20
+                  ..strokeWidth = toolSize.strokeSize
                   ..strokeCap = StrokeCap.round
                   ..style = PaintingStyle.stroke,
               ),
