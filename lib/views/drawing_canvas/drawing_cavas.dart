@@ -14,13 +14,18 @@ class _DrawingCanvasState extends State<DrawingCanvas> {
   Widget build(BuildContext context) {
     return MouseRegion(
       cursor: SystemMouseCursors.precise,
-      child: GestureDetector(
-        onPanUpdate: (DragUpdateDetails details) {
+      child: Listener(
+        onPointerDown: (details) {
+          setState(() {});
+        },
+        onPointerMove: (details) {
           setState(() {
-            offsets.add(details.globalPosition);
+            offsets.add(details.position);
           });
         },
-        onPanEnd: (DragEndDetails details) => setState(() {}),
+        onPointerUp: (_) {
+          setState(() {});
+        },
         child: RepaintBoundary(
           child: SizedBox(
             width: double.maxFinite,
