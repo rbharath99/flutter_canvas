@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_canvas/views/canvas_options/widgets/color_selector.dart';
 import 'package:flutter_canvas/views/canvas_options/widgets/size_slider.dart';
+import 'package:flutter_canvas/views/canvas_options/widgets/tool_selector.dart';
 
 class CanvasOptions extends StatelessWidget {
   const CanvasOptions({super.key});
@@ -14,8 +16,8 @@ class CanvasOptions extends StatelessWidget {
       child: const Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          Placeholder(),
-          Placeholder(),
+          ToolSelector(),
+          ColorSelector(),
           SizeSlider(),
         ],
       ),
