@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_canvas/views/canvas_options/widgets/size_slider.dart';
 
 class CanvasOptions extends StatelessWidget {
   const CanvasOptions({super.key});
@@ -15,7 +16,7 @@ class CanvasOptions extends StatelessWidget {
         children: [
           Placeholder(),
           Placeholder(),
-          Placeholder(),
+          SizeSlider(),
         ],
       ),
     );
