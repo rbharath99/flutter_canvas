@@ -8,7 +8,8 @@ class PolygonSidesSlider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final polygonSides = context.select(
-        (PolygonSidesCubit polygonSidesCubit) => polygonSidesCubit.state);
+      (PolygonSidesCubit polygonSidesCubit) => polygonSidesCubit.state,
+    );
     return Column(
       children: [
         const Text('Sides'),

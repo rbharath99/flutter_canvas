@@ -11,8 +11,6 @@ class ColorSelector extends StatelessWidget {
     final colorCubit = context.read<ColorCubit>();
     return Column(
       mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Wrap(
           alignment: WrapAlignment.center,
@@ -41,7 +39,7 @@ class ColorSelector extends StatelessWidget {
                     ),
                   ),
                 ),
-              )
+              ),
           ],
         ),
       ],

@@ -12,7 +12,7 @@ class CanvasOptions extends StatelessWidget {
       width: width * 0.3,
       backgroundColor: Colors.white,
       child: const Padding(
-        padding: EdgeInsets.all(10.0),
+        padding: EdgeInsets.all(10),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [

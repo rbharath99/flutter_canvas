@@ -23,7 +23,8 @@ class _CurrentSketchState extends State<CurrentSketch> {
         context.select((ToolCubit toolCubit) => toolCubit.state);
     final toolSize = context.select((SizeCubit sizeCubit) => sizeCubit.state);
     final polygonSides = context.select(
-        (PolygonSidesCubit polygonSidesCubit) => polygonSidesCubit.state);
+      (PolygonSidesCubit polygonSidesCubit) => polygonSidesCubit.state,
+    );
     return Listener(
       onPointerDown: (details) {
         setState(() {
@@ -51,9 +52,8 @@ class _CurrentSketchState extends State<CurrentSketch> {
             details.localPosition.dx,
             details.localPosition.dy,
           );
-          final newPoints = List<Offset>.from(drawing.points);
-          newPoints.add(offset);
-          drawing = (Drawing(
+          final newPoints = List<Offset>.from(drawing.points)..add(offset);
+          drawing = Drawing(
             offset: offset,
             paint: Paint()
               ..color = selectedColor
@@ -64,7 +64,7 @@ class _CurrentSketchState extends State<CurrentSketch> {
             toolType: selectedTool,
             sides: polygonSides,
             points: newPoints,
-          ));
+          );
         });
       },
       onPointerUp: (details) {
@@ -74,7 +74,7 @@ class _CurrentSketchState extends State<CurrentSketch> {
             details.localPosition.dy,
           );
           context.read<CanvasBloc>().add(UpdateAllDrawings(drawing: drawing));
-          drawing = (Drawing(
+          drawing = Drawing(
             offset: offset,
             paint: Paint()
               ..color = selectedColor
@@ -85,7 +85,7 @@ class _CurrentSketchState extends State<CurrentSketch> {
             toolType: selectedTool,
             sides: polygonSides,
             points: [],
-          ));
+          );
         });
       },
       child: RepaintBoundary(

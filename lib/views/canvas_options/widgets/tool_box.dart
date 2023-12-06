@@ -5,10 +5,10 @@ import 'package:flutter_canvas/views/canvas_options/cubit/tool_cubit.dart';
 
 class ToolBox extends StatelessWidget {
   const ToolBox({
-    super.key,
     required this.iconData,
     required this.tooltip,
     required this.toolType,
+    super.key,
   });
 
   final IconData iconData;
@@ -27,9 +27,7 @@ class ToolBox extends StatelessWidget {
           height: 35,
           width: 35,
           decoration: BoxDecoration(
-            border: Border.all(
-              color: Colors.black,
-            ),
+            border: Border.all(),
             borderRadius: const BorderRadius.all(
               Radius.circular(5),
             ),
