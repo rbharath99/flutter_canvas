@@ -14,7 +14,6 @@ class DrawingCanvas extends StatefulWidget {
 
 class _DrawingCanvasState extends State<DrawingCanvas> {
   Drawing drawing = Drawing.empty;
-  List<Offset> points = List.empty();
   List<Drawing> allDrawings = [];
 
   @override
@@ -75,9 +74,13 @@ class _DrawingCanvasState extends State<DrawingCanvas> {
         },
         onPointerUp: (details) {
           setState(() {
+            final offset = Offset(
+              details.localPosition.dx,
+              details.localPosition.dy,
+            );
             allDrawings = List.from(allDrawings)..add(drawing);
             drawing = (Drawing(
-              offset: details.localPosition,
+              offset: offset,
               paint: Paint()
                 ..color = selectedColor
                 ..isAntiAlias = true
@@ -86,7 +89,7 @@ class _DrawingCanvasState extends State<DrawingCanvas> {
                 ..style = PaintingStyle.stroke,
               toolType: selectedTool,
               sides: polygonSides,
-              points: List.empty(),
+              points: [],
             ));
           });
         },
@@ -174,5 +177,7 @@ class SketchPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return (oldDelegate as SketchPainter).drawings != drawings;
+  }
 }
