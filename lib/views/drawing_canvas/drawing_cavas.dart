@@ -13,7 +13,9 @@ class DrawingCanvas extends StatefulWidget {
 }
 
 class _DrawingCanvasState extends State<DrawingCanvas> {
-  final List<Drawing?> drawings = [];
+  Drawing drawing = Drawing.empty;
+  List<Offset> points = List.empty();
+  List<Drawing> allDrawings = [];
 
   @override
   Widget build(BuildContext context) {
@@ -29,41 +31,63 @@ class _DrawingCanvasState extends State<DrawingCanvas> {
       child: Listener(
         onPointerDown: (details) {
           setState(() {
-            drawings.add(
-              Drawing(
-                offset: details.localPosition,
-                paint: Paint()
-                  ..color = selectedColor
-                  ..isAntiAlias = true
-                  ..strokeWidth = toolSize.strokeSize
-                  ..strokeCap = StrokeCap.round
-                  ..style = PaintingStyle.stroke,
-                toolType: selectedTool,
-                sides: polygonSides,
-              ),
+            final newPoints = List<Offset>.from(drawing.points);
+            final offset = Offset(
+              details.localPosition.dx,
+              details.localPosition.dy,
+            );
+            newPoints.add(offset);
+            drawing = Drawing(
+              offset: offset,
+              paint: Paint()
+                ..color = selectedColor
+                ..isAntiAlias = true
+                ..strokeWidth = toolSize.strokeSize
+                ..strokeCap = StrokeCap.round
+                ..style = PaintingStyle.stroke,
+              toolType: selectedTool,
+              sides: polygonSides,
+              points: newPoints,
             );
           });
         },
         onPointerMove: (details) {
           setState(() {
-            drawings.add(
-              Drawing(
-                offset: details.localPosition,
-                paint: Paint()
-                  ..color = selectedColor
-                  ..isAntiAlias = true
-                  ..strokeWidth = toolSize.strokeSize
-                  ..strokeCap = StrokeCap.round
-                  ..style = PaintingStyle.stroke,
-                toolType: selectedTool,
-                sides: polygonSides,
-              ),
+            final offset = Offset(
+              details.localPosition.dx,
+              details.localPosition.dy,
             );
+            final newPoints = List<Offset>.from(drawing.points);
+            newPoints.add(offset);
+            drawing = (Drawing(
+              offset: offset,
+              paint: Paint()
+                ..color = selectedColor
+                ..isAntiAlias = true
+                ..strokeWidth = toolSize.strokeSize
+                ..strokeCap = StrokeCap.round
+                ..style = PaintingStyle.stroke,
+              toolType: selectedTool,
+              sides: polygonSides,
+              points: newPoints,
+            ));
           });
         },
-        onPointerUp: (_) {
+        onPointerUp: (details) {
           setState(() {
-            drawings.add(null);
+            allDrawings = List.from(allDrawings)..add(drawing);
+            drawing = (Drawing(
+              offset: details.localPosition,
+              paint: Paint()
+                ..color = selectedColor
+                ..isAntiAlias = true
+                ..strokeWidth = toolSize.strokeSize
+                ..strokeCap = StrokeCap.round
+                ..style = PaintingStyle.stroke,
+              toolType: selectedTool,
+              sides: polygonSides,
+              points: List.empty(),
+            ));
           });
         },
         child: RepaintBoundary(
@@ -72,7 +96,7 @@ class _DrawingCanvasState extends State<DrawingCanvas> {
             height: double.maxFinite,
             child: CustomPaint(
               painter: SketchPainter(
-                drawings: drawings,
+                drawings: allDrawings,
               ),
             ),
           ),
@@ -91,51 +115,58 @@ class SketchPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    for (int i = 0; i < drawings.length - 1; i++) {
-      final current = drawings[i];
-      final next = drawings[i + 1];
-      final toolType = drawings[i]?.toolType;
-      if (current != null && next != null) {
-        final radius = (current.offset - next.offset).distance / 2;
-        final center = Offset((current.offset.dx + next.offset.dx) / 2,
-            (current.offset.dy + next.offset.dy) / 2);
-        if (toolType == ToolType.pencil || toolType == ToolType.line) {
-          canvas.drawLine(current.offset, next.offset, current.paint);
+    for (final drawing in drawings) {
+      final paint = drawing!.paint;
+      final toolType = drawing.toolType;
+      final d1 = drawing.points.first;
+      final d2 = drawing.points.last;
+      final radius = (d1 - d2).distance / 2;
+      final center = Offset((d1.dx + d2.dx) / 2, (d1.dy + d2.dy) / 2);
+      if (toolType == ToolType.circle) {
+        canvas.drawCircle(center, radius, paint);
+      } else if (toolType == ToolType.line) {
+        canvas.drawLine(d1, d2, paint);
+      } else if (toolType == ToolType.square) {
+        final rect = Rect.fromPoints(d1, d2);
+        canvas.drawRRect(
+          RRect.fromRectAndRadius(rect, const Radius.circular(0)),
+          paint,
+        );
+      } else if (toolType == ToolType.polygon) {
+        final polygonPath = Path();
+        final sides = drawing.sides;
+        final angle = (math.pi * 2) / sides;
+        const radian = 0;
+        final startPoint =
+            Offset(radius * math.cos(radian), radius * math.sin(radian));
+
+        polygonPath.moveTo(
+          startPoint.dx + center.dx,
+          startPoint.dy + center.dy,
+        );
+
+        for (int i = 1; i <= sides; i++) {
+          final x = radius * math.cos(radian + angle * i) + center.dx;
+          final y = radius * math.sin(radian + angle * i) + center.dy;
+          polygonPath.lineTo(x, y);
         }
-        if (toolType == ToolType.circle) {
-          canvas.drawCircle(center, radius, current.paint);
+
+        polygonPath.close();
+        canvas.drawPath(polygonPath, paint);
+      } else if (toolType == ToolType.pencil) {
+        for (int i = 0; i < drawing.points.length - 1; i++) {
+          final current = drawing.points[i];
+          final next = drawing.points[i + 1];
+          canvas.drawLine(current, next, paint);
         }
-        if (toolType == ToolType.polygon) {
-          final polygonPath = Path();
-          final sides = current.sides;
-          final angle = (math.pi * 2) / sides;
-          const radian = 0;
-          final startPoint =
-              Offset(radius * math.cos(radian), radius * math.sin(radian));
-          polygonPath.moveTo(
-            startPoint.dx + center.dx,
-            startPoint.dy + center.dy,
-          );
-          for (int i = 1; i <= sides; i++) {
-            final x = radius * math.cos(radian + angle * i) + center.dx;
-            final y = radius * math.sin(radian + angle * i) + center.dy;
-            polygonPath.lineTo(x, y);
-          }
-          polygonPath.close();
-          canvas.drawPath(polygonPath, current.paint);
-        }
-        if (toolType == ToolType.square) {
-          final rect = Rect.fromPoints(current.offset, next.offset);
-          canvas.drawRRect(
-            RRect.fromRectAndRadius(rect, const Radius.circular(0)),
-            current.paint,
-          );
-        }
-        if (toolType == ToolType.eraser) {
+      } else if (toolType == ToolType.eraser) {
+        for (int i = 0; i < drawing.points.length - 1; i++) {
+          final current = drawing.points[i];
+          final next = drawing.points[i + 1];
           canvas.save();
-          current.paint.blendMode = BlendMode.clear;
-          current.paint.color = Colors.transparent;
-          canvas.drawLine(current.offset, next.offset, current.paint);
+          paint.blendMode = BlendMode.clear;
+          paint.color = Colors.transparent;
+          canvas.drawLine(current, next, paint);
           canvas.restore();
         }
       }
