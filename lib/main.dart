@@ -34,28 +34,23 @@ class MyApp extends StatelessWidget {
             create: (context) => PolygonSidesCubit(),
           ),
         ],
-        child: const MyHomePage(title: 'Flutter Whiteboard'),
+        child: const WhiteBoardCanvas(title: 'Flutter Whiteboard'),
       ),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+class WhiteBoardCanvas extends StatelessWidget {
+  const WhiteBoardCanvas({super.key, required this.title});
   final String title;
 
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: const CanvasOptions(),
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
+        title: Text(title),
       ),
       body: const DrawingCanvas(),
     );
