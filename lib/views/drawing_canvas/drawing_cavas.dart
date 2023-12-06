@@ -2,11 +2,8 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_canvas/enum/tool_type.dart';
-import 'package:flutter_canvas/models/drawing.dart';
-import 'package:flutter_canvas/views/canvas_options/cubit/color_cubit.dart';
-import 'package:flutter_canvas/views/canvas_options/cubit/polygon_sides_cubit.dart';
-import 'package:flutter_canvas/views/canvas_options/cubit/size_cubit.dart';
-import 'package:flutter_canvas/views/canvas_options/cubit/tool_cubit.dart';
+import 'package:flutter_canvas/models/models.dart';
+import 'package:flutter_canvas/views/canvas_options/cubit/cubits.dart';
 
 class DrawingCanvas extends StatefulWidget {
   const DrawingCanvas({super.key});

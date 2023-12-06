@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_canvas/enum/tool_type.dart';
-import 'package:flutter_canvas/views/canvas_options/widgets/tool_box.dart';
+import 'package:flutter_canvas/views/canvas_options/widgets/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ToolSelector extends StatelessWidget {
