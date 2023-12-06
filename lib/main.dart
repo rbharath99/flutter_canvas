@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_canvas/views/canvas_options/cubit/color_cubit.dart';
+import 'package:flutter_canvas/views/canvas_options/cubit/polygon_sides_cubit.dart';
 import 'package:flutter_canvas/views/canvas_options/cubit/size_cubit.dart';
+import 'package:flutter_canvas/views/canvas_options/cubit/tool_cubit.dart';
 
 import 'views/views.dart';
 
@@ -27,6 +29,12 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider(
             create: (context) => SizeCubit(),
+          ),
+          BlocProvider(
+            create: (context) => ToolCubit(),
+          ),
+          BlocProvider(
+            create: (context) => PolygonSidesCubit(),
           ),
         ],
         child: const MyHomePage(title: 'Flutter Whiteboard'),
