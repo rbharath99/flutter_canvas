@@ -1,3 +1,4 @@
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_canvas/enum/tool_type.dart';
@@ -98,22 +99,38 @@ class SketchPainter extends CustomPainter {
       final next = drawings[i + 1];
       final toolType = drawings[i]?.toolType;
       if (current != null && next != null) {
+        final radius = (current.offset - next.offset).distance / 2;
+        final center = Offset((current.offset.dx + next.offset.dx) / 2,
+            (current.offset.dy + next.offset.dy) / 2);
         if (toolType == ToolType.pencil || toolType == ToolType.line) {
           canvas.drawLine(current.offset, next.offset, current.paint);
         }
         if (toolType == ToolType.circle) {
-          final radius = (current.offset - next.offset).distance / 2;
-          final center = Offset((current.offset.dx + next.offset.dx) / 2,
-              (current.offset.dy + next.offset.dy) / 2);
           canvas.drawCircle(center, radius, current.paint);
         }
         if (toolType == ToolType.polygon) {
-          // TODO: create slider to select number of sides
+          final polygonPath = Path();
+          final sides = current.sides;
+          final angle = (math.pi * 2) / sides;
+          const radian = 0;
+          final startPoint =
+              Offset(radius * math.cos(radian), radius * math.sin(radian));
+          polygonPath.moveTo(
+            startPoint.dx + center.dx,
+            startPoint.dy + center.dy,
+          );
+          for (int i = 1; i <= sides; i++) {
+            final x = radius * math.cos(radian + angle * i) + center.dx;
+            final y = radius * math.sin(radian + angle * i) + center.dy;
+            polygonPath.lineTo(x, y);
+          }
+          polygonPath.close();
+          canvas.drawPath(polygonPath, current.paint);
         }
         if (toolType == ToolType.square) {
           final rect = Rect.fromPoints(current.offset, next.offset);
           canvas.drawRRect(
-            RRect.fromRectAndRadius(rect, const Radius.circular(5)),
+            RRect.fromRectAndRadius(rect, const Radius.circular(0)),
             current.paint,
           );
         }
