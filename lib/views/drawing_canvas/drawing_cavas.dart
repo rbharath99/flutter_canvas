@@ -41,6 +41,7 @@ class _DrawingCanvasState extends State<DrawingCanvas> {
                   ..strokeCap = StrokeCap.round
                   ..style = PaintingStyle.stroke,
                 toolType: selectedTool,
+                sides: polygonSides,
               ),
             );
           });
@@ -57,6 +58,7 @@ class _DrawingCanvasState extends State<DrawingCanvas> {
                   ..strokeCap = StrokeCap.round
                   ..style = PaintingStyle.stroke,
                 toolType: selectedTool,
+                sides: polygonSides,
               ),
             );
           });
