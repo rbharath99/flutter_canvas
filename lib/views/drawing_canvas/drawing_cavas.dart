@@ -1,9 +1,5 @@
-import 'dart:math' as math;
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_canvas/enum/tool_type.dart';
-import 'package:flutter_canvas/models/models.dart';
-import 'package:flutter_canvas/views/canvas_options/cubit/cubits.dart';
+import 'package:flutter_canvas/views/drawing_canvas/widgets/widgets.dart';
 
 class DrawingCanvas extends StatefulWidget {
   const DrawingCanvas({super.key});
@@ -13,135 +9,16 @@ class DrawingCanvas extends StatefulWidget {
 }
 
 class _DrawingCanvasState extends State<DrawingCanvas> {
-  final List<Drawing?> drawings = [];
-
   @override
   Widget build(BuildContext context) {
-    final selectedColor =
-        context.select((ColorCubit colorCubit) => colorCubit.state);
-    final selectedTool =
-        context.select((ToolCubit toolCubit) => toolCubit.state);
-    final toolSize = context.select((SizeCubit sizeCubit) => sizeCubit.state);
-    final polygonSides = context.select(
-        (PolygonSidesCubit polygonSidesCubit) => polygonSidesCubit.state);
-    return MouseRegion(
+    return const MouseRegion(
       cursor: SystemMouseCursors.precise,
-      child: Listener(
-        onPointerDown: (details) {
-          setState(() {
-            drawings.add(
-              Drawing(
-                offset: details.localPosition,
-                paint: Paint()
-                  ..color = selectedColor
-                  ..isAntiAlias = true
-                  ..strokeWidth = toolSize.strokeSize
-                  ..strokeCap = StrokeCap.round
-                  ..style = PaintingStyle.stroke,
-                toolType: selectedTool,
-                sides: polygonSides,
-              ),
-            );
-          });
-        },
-        onPointerMove: (details) {
-          setState(() {
-            drawings.add(
-              Drawing(
-                offset: details.localPosition,
-                paint: Paint()
-                  ..color = selectedColor
-                  ..isAntiAlias = true
-                  ..strokeWidth = toolSize.strokeSize
-                  ..strokeCap = StrokeCap.round
-                  ..style = PaintingStyle.stroke,
-                toolType: selectedTool,
-                sides: polygonSides,
-              ),
-            );
-          });
-        },
-        onPointerUp: (_) {
-          setState(() {
-            drawings.add(null);
-          });
-        },
-        child: RepaintBoundary(
-          child: SizedBox(
-            width: double.maxFinite,
-            height: double.maxFinite,
-            child: CustomPaint(
-              painter: SketchPainter(
-                drawings: drawings,
-              ),
-            ),
-          ),
-        ),
+      child: Stack(
+        children: [
+          AllSketches(),
+          CurrentSketch(),
+        ],
       ),
     );
   }
-}
-
-class SketchPainter extends CustomPainter {
-  const SketchPainter({
-    required this.drawings,
-  });
-
-  final List<Drawing?> drawings;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    for (int i = 0; i < drawings.length - 1; i++) {
-      final current = drawings[i];
-      final next = drawings[i + 1];
-      final toolType = drawings[i]?.toolType;
-      if (current != null && next != null) {
-        final radius = (current.offset - next.offset).distance / 2;
-        final center = Offset((current.offset.dx + next.offset.dx) / 2,
-            (current.offset.dy + next.offset.dy) / 2);
-        if (toolType == ToolType.pencil || toolType == ToolType.line) {
-          canvas.drawLine(current.offset, next.offset, current.paint);
-        }
-        if (toolType == ToolType.circle) {
-          canvas.drawCircle(center, radius, current.paint);
-        }
-        if (toolType == ToolType.polygon) {
-          final polygonPath = Path();
-          final sides = current.sides;
-          final angle = (math.pi * 2) / sides;
-          const radian = 0;
-          final startPoint =
-              Offset(radius * math.cos(radian), radius * math.sin(radian));
-          polygonPath.moveTo(
-            startPoint.dx + center.dx,
-            startPoint.dy + center.dy,
-          );
-          for (int i = 1; i <= sides; i++) {
-            final x = radius * math.cos(radian + angle * i) + center.dx;
-            final y = radius * math.sin(radian + angle * i) + center.dy;
-            polygonPath.lineTo(x, y);
-          }
-          polygonPath.close();
-          canvas.drawPath(polygonPath, current.paint);
-        }
-        if (toolType == ToolType.square) {
-          final rect = Rect.fromPoints(current.offset, next.offset);
-          canvas.drawRRect(
-            RRect.fromRectAndRadius(rect, const Radius.circular(0)),
-            current.paint,
-          );
-        }
-        if (toolType == ToolType.eraser) {
-          canvas.save();
-          current.paint.blendMode = BlendMode.clear;
-          current.paint.color = Colors.transparent;
-          canvas.drawLine(current.offset, next.offset, current.paint);
-          canvas.restore();
-        }
-      }
-    }
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
 }
