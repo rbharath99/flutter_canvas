@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_canvas/enum/tool_type.dart';
 import 'package:flutter_canvas/models/drawing.dart';
 import 'package:flutter_canvas/views/canvas_options/cubit/color_cubit.dart';
+import 'package:flutter_canvas/views/canvas_options/cubit/polygon_sides_cubit.dart';
 import 'package:flutter_canvas/views/canvas_options/cubit/size_cubit.dart';
 import 'package:flutter_canvas/views/canvas_options/cubit/tool_cubit.dart';
 
@@ -18,10 +19,13 @@ class _DrawingCanvasState extends State<DrawingCanvas> {
 
   @override
   Widget build(BuildContext context) {
-    final selectedColor = context.read<ColorCubit>().state;
+    final selectedColor =
+        context.select((ColorCubit colorCubit) => colorCubit.state);
     final selectedTool =
         context.select((ToolCubit toolCubit) => toolCubit.state);
     final toolSize = context.select((SizeCubit sizeCubit) => sizeCubit.state);
+    final polygonSides = context.select(
+        (PolygonSidesCubit polygonSidesCubit) => polygonSidesCubit.state);
     return MouseRegion(
       cursor: SystemMouseCursors.precise,
       child: Listener(
