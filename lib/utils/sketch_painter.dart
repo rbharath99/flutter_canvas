@@ -53,6 +53,10 @@ class SketchPainter extends CustomPainter {
         canvas.drawLine(firstPoint, lastPoint, paint);
       } else if (toolType == ToolType.circle) {
         canvas.drawOval(rect, paint);
+      } else if (toolType == ToolType.eraser) {
+        paint.blendMode = BlendMode.clear;
+        paint.color = Colors.transparent;
+        canvas.drawPath(path, paint);
       } else if (toolType == ToolType.polygon) {
         Path polygonPath = Path();
         int sides = drawing.sides;
