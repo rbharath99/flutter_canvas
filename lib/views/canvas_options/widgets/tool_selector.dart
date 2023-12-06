@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_canvas/enum/tool_type.dart';
 import 'package:flutter_canvas/views/canvas_options/widgets/tool_box.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -18,26 +19,32 @@ class ToolSelector extends StatelessWidget {
             ToolBox(
               iconData: FontAwesomeIcons.pencil,
               tooltip: 'Pencil',
+              toolType: ToolType.pencil,
             ),
             ToolBox(
               iconData: FontAwesomeIcons.rulerHorizontal,
               tooltip: 'Line',
+              toolType: ToolType.line,
             ),
             ToolBox(
               iconData: Icons.hexagon_outlined,
               tooltip: 'Polygon',
+              toolType: ToolType.polygon,
             ),
             ToolBox(
               iconData: FontAwesomeIcons.eraser,
               tooltip: 'Eraser',
+              toolType: ToolType.eraser,
             ),
             ToolBox(
               iconData: FontAwesomeIcons.square,
               tooltip: 'Square',
+              toolType: ToolType.square,
             ),
             ToolBox(
               iconData: FontAwesomeIcons.circle,
               tooltip: 'Circle',
+              toolType: ToolType.circle,
             ),
           ],
         ),
