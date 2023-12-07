@@ -3,3 +3,4 @@ export 'polygon_sides_slider.dart';
 export 'size_slider.dart';
 export 'tool_box.dart';
 export 'tool_selector.dart';
+export 'undo_redo.dart';

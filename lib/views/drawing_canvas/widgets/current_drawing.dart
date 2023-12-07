@@ -74,6 +74,7 @@ class _CurrentSketchState extends State<CurrentSketch> {
             details.localPosition.dy,
           );
           context.read<CanvasBloc>().add(UpdateAllDrawings(drawing: drawing));
+          //context.read<CanvasBloc>().add(AddToUndoStack(drawing: drawing));
           drawing = Drawing(
             offset: offset,
             paint: Paint()
