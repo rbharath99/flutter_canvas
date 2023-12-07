@@ -16,24 +16,6 @@ class UpdateAllDrawings extends CanvasEvent {
   List<Object> get props => [drawing];
 }
 
-class AddToUndoStack extends CanvasEvent {
-  const AddToUndoStack({required this.drawing});
-
-  final Drawing drawing;
-
-  @override
-  List<Object> get props => [drawing];
-}
-
-class AddToRedoStack extends CanvasEvent {
-  const AddToRedoStack({required this.drawing});
-
-  final Drawing drawing;
-
-  @override
-  List<Object> get props => [drawing];
-}
-
 class Undo extends CanvasEvent {}
 
 class Redo extends CanvasEvent {}

@@ -10,8 +10,6 @@ part 'canvas_event.dart';
 class CanvasBloc extends Bloc<CanvasEvent, CanvasState> {
   CanvasBloc() : super(const CanvasState()) {
     on<UpdateAllDrawings>(_updateAllDrawings);
-    on<AddToUndoStack>(_onAddToUndoStack);
-    on<AddToRedoStack>(_onAddToRedoStack);
     on<Undo>(_onUndo);
     on<Redo>(_onRedo);
   }
@@ -29,24 +27,6 @@ class CanvasBloc extends Bloc<CanvasEvent, CanvasState> {
     );
   }
 
-  void _onAddToUndoStack(
-    AddToUndoStack event,
-    Emitter<CanvasState> emit,
-  ) {
-    // final drawing = event.drawing;
-    // final updatedUndoStack = List<Drawing>.from(state.undoStack)..add(drawing);
-    // emit(
-    //   state.copyWith(
-    //     undoStack: updatedUndoStack,
-    //   ),
-    // );
-  }
-
-  void _onAddToRedoStack(
-    AddToRedoStack event,
-    Emitter<CanvasState> emit,
-  ) {}
-
   void _onUndo(
     Undo event,
     Emitter<CanvasState> emit,
@@ -55,7 +35,6 @@ class CanvasBloc extends Bloc<CanvasEvent, CanvasState> {
     final lastDrawing = allDrawings.removeLast();
     final updatedUndoStack = List<Drawing>.from(state.undoStack)
       ..add(lastDrawing);
-    //AddToUndoStack(drawing: lastDrawing);
     emit(
       state.copyWith(
         allDrawings: allDrawings,
@@ -69,11 +48,12 @@ class CanvasBloc extends Bloc<CanvasEvent, CanvasState> {
     Emitter<CanvasState> emit,
   ) {
     final undos = List<Drawing>.from(state.undoStack);
-    final lastUndo = undos.removeAt(0);
+    final lastUndo = undos.removeLast();
     final allDrawings = List<Drawing>.from(state.allDrawings)..add(lastUndo);
     emit(
       state.copyWith(
         allDrawings: allDrawings,
+        undoStack: undos,
       ),
     );
   }
