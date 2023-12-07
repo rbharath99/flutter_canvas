@@ -11,18 +11,25 @@ class UndoRedo extends StatelessWidget {
       children: [
         const Text('Undo/Redo'),
         Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TextButton(
-              onPressed: () {
-                context.read<CanvasBloc>().add(Undo());
-              },
-              child: const Text('Undo'),
+            Tooltip(
+              message: 'Undo',
+              child: IconButton(
+                icon: const Icon(Icons.undo),
+                onPressed: () {
+                  context.read<CanvasBloc>().add(Undo());
+                },
+              ),
             ),
-            TextButton(
-              onPressed: () {
-                context.read<CanvasBloc>().add(Redo());
-              },
-              child: const Text('Redo'),
+            Tooltip(
+              message: 'Redo',
+              child: IconButton(
+                icon: const Icon(Icons.redo),
+                onPressed: () {
+                  context.read<CanvasBloc>().add(Redo());
+                },
+              ),
             ),
           ],
         ),
