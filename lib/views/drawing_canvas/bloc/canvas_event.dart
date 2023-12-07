@@ -15,3 +15,7 @@ class UpdateAllDrawings extends CanvasEvent {
   @override
   List<Object> get props => [drawing];
 }
+
+class Undo extends CanvasEvent {}
+
+class Redo extends CanvasEvent {}
