@@ -72,7 +72,9 @@ class ColorSelector extends StatelessWidget {
                         },
                       );
                     },
-                    child: const Text('Color Picker'),
+                    child: const Icon(
+                      Icons.colorize,
+                    ),
                   ),
                 ),
               ],
