@@ -10,7 +10,6 @@ class ColorSelector extends StatelessWidget {
   Widget build(BuildContext context) {
     final selectedColor =
         context.select((ColorCubit colorCubit) => colorCubit.state);
-    print(selectedColor);
     final colors = [Colors.black, Colors.white, ...Colors.primaries];
     return Column(
       mainAxisSize: MainAxisSize.min,
