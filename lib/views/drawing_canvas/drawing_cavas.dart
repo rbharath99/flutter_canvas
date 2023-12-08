@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_canvas/utils/tool_to_cursor.dart';
+import 'package:flutter_canvas/views/canvas_options/cubit/cubits.dart';
 import 'package:flutter_canvas/views/drawing_canvas/widgets/widgets.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class DrawingCanvas extends StatefulWidget {
   const DrawingCanvas({super.key});
@@ -14,6 +16,8 @@ class _DrawingCanvasState extends State<DrawingCanvas> {
   static const topDelta = 80;
   @override
   Widget build(BuildContext context) {
+    final selectedTool =
+        context.select((ToolCubit toolCubit) => toolCubit.state);
     return MouseRegion(
       cursor: SystemMouseCursors.none,
       child: Listener(
@@ -45,7 +49,7 @@ class _DrawingCanvasState extends State<DrawingCanvas> {
               ),
               left: pointer.dx,
               top: pointer.dy - topDelta,
-              child: const Icon(FontAwesomeIcons.pen),
+              child: getToolIcon(selectedTool),
             ),
             const AllSketches(),
             const CurrentSketch(),
