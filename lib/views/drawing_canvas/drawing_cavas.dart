@@ -11,6 +11,7 @@ class DrawingCanvas extends StatefulWidget {
 
 class _DrawingCanvasState extends State<DrawingCanvas> {
   Offset pointer = Offset.zero;
+  static const topDelta = 80;
   @override
   Widget build(BuildContext context) {
     return MouseRegion(
@@ -43,7 +44,7 @@ class _DrawingCanvasState extends State<DrawingCanvas> {
                 milliseconds: 5,
               ),
               left: pointer.dx,
-              top: pointer.dy,
+              top: pointer.dy - topDelta,
               child: const Icon(FontAwesomeIcons.pen),
             ),
             const AllSketches(),
