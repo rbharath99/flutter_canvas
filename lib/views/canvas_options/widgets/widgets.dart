@@ -1,3 +1,4 @@
+export 'color_picker_dialog.dart';
 export 'color_selector.dart';
 export 'polygon_sides_slider.dart';
 export 'size_slider.dart';

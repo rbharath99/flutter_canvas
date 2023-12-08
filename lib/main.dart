@@ -12,32 +12,32 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Whiteboard',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: MultiBlocProvider(
-        providers: [
-          BlocProvider(
-            create: (context) => ColorCubit(),
-          ),
-          BlocProvider(
-            create: (context) => SizeCubit(),
-          ),
-          BlocProvider(
-            create: (context) => ToolCubit(),
-          ),
-          BlocProvider(
-            create: (context) => PolygonSidesCubit(),
-          ),
-          BlocProvider(
-            create: (context) => CanvasBloc(),
-          ),
-        ],
-        child: const WhiteBoardCanvas(title: 'Flutter Whiteboard'),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => ColorCubit(),
+        ),
+        BlocProvider(
+          create: (context) => SizeCubit(),
+        ),
+        BlocProvider(
+          create: (context) => ToolCubit(),
+        ),
+        BlocProvider(
+          create: (context) => PolygonSidesCubit(),
+        ),
+        BlocProvider(
+          create: (context) => CanvasBloc(),
+        ),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Whiteboard',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+        ),
+        home: const WhiteBoardCanvas(title: 'Flutter Whiteboard'),
       ),
     );
   }
