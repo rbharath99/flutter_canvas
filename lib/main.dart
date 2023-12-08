@@ -27,6 +27,9 @@ class MyApp extends StatelessWidget {
           create: (context) => PolygonSidesCubit(),
         ),
         BlocProvider(
+          create: (context) => ZoomCubit(),
+        ),
+        BlocProvider(
           create: (context) => CanvasBloc(),
         ),
       ],
