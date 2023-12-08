@@ -5,21 +5,25 @@ class CanvasState extends Equatable {
     this.allDrawings = const [],
     this.undoStack = const [],
     this.redoStack = const [],
+    this.position = Offset.zero,
   });
 
   final List<Drawing> allDrawings;
   final List<Drawing> undoStack;
   final List<Drawing> redoStack;
+  final Offset position;
 
   CanvasState copyWith({
     List<Drawing>? allDrawings,
     List<Drawing>? undoStack,
     List<Drawing>? redoStack,
+    Offset? position,
   }) {
     return CanvasState(
       allDrawings: allDrawings ?? this.allDrawings,
       undoStack: undoStack ?? this.undoStack,
       redoStack: redoStack ?? this.redoStack,
+      position: position ?? this.position,
     );
   }
 
@@ -28,5 +32,6 @@ class CanvasState extends Equatable {
         allDrawings,
         undoStack,
         redoStack,
+        position,
       ];
 }

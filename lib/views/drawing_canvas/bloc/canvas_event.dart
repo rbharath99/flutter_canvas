@@ -19,3 +19,12 @@ class UpdateAllDrawings extends CanvasEvent {
 class Undo extends CanvasEvent {}
 
 class Redo extends CanvasEvent {}
+
+class UpdateCursorPosition extends CanvasEvent {
+  const UpdateCursorPosition({required this.details});
+
+  final PointerEvent details;
+
+  @override
+  List<Object> get props => [details];
+}

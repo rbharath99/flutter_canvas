@@ -2,50 +2,47 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_canvas/utils/tool_to_cursor.dart';
 import 'package:flutter_canvas/views/canvas_options/cubit/cubits.dart';
+import 'package:flutter_canvas/views/drawing_canvas/bloc/canvas_bloc.dart';
 import 'package:flutter_canvas/views/drawing_canvas/widgets/widgets.dart';
 
-class DrawingCanvas extends StatefulWidget {
+class DrawingCanvas extends StatelessWidget {
   const DrawingCanvas({super.key});
 
   @override
-  State<DrawingCanvas> createState() => _DrawingCanvasState();
-}
-
-class _DrawingCanvasState extends State<DrawingCanvas> {
-  Offset pointer = Offset.zero;
-  static const topDelta = 80;
-  @override
   Widget build(BuildContext context) {
+    const topDelta = 80;
     final selectedTool =
         context.select((ToolCubit toolCubit) => toolCubit.state);
+    final pointer =
+        context.select((CanvasBloc canvasBloc) => canvasBloc.state.position);
     return MouseRegion(
       cursor: SystemMouseCursors.none,
       child: Listener(
         onPointerHover: (details) {
-          setState(() {
-            pointer = details.position;
-          });
+          context
+              .read<CanvasBloc>()
+              .add(UpdateCursorPosition(details: details));
         },
         onPointerDown: (details) {
-          setState(() {
-            pointer = details.position;
-          });
+          context
+              .read<CanvasBloc>()
+              .add(UpdateCursorPosition(details: details));
         },
         onPointerMove: (details) {
-          setState(() {
-            pointer = details.position;
-          });
+          context
+              .read<CanvasBloc>()
+              .add(UpdateCursorPosition(details: details));
         },
         onPointerUp: (details) {
-          setState(() {
-            pointer = details.position;
-          });
+          context
+              .read<CanvasBloc>()
+              .add(UpdateCursorPosition(details: details));
         },
         child: Stack(
           children: [
             AnimatedPositioned(
               duration: const Duration(
-                milliseconds: 5,
+                milliseconds: 1,
               ),
               left: pointer.dx,
               top: pointer.dy - topDelta,

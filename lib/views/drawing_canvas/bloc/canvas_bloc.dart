@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_canvas/models/models.dart';
 
@@ -12,6 +13,7 @@ class CanvasBloc extends Bloc<CanvasEvent, CanvasState> {
     on<UpdateAllDrawings>(_updateAllDrawings);
     on<Undo>(_onUndo);
     on<Redo>(_onRedo);
+    on<UpdateCursorPosition>(_updateCursorPosition);
   }
 
   FutureOr<void> _updateAllDrawings(
@@ -54,6 +56,18 @@ class CanvasBloc extends Bloc<CanvasEvent, CanvasState> {
       state.copyWith(
         allDrawings: allDrawings,
         undoStack: undos,
+      ),
+    );
+  }
+
+  void _updateCursorPosition(
+    UpdateCursorPosition event,
+    Emitter<CanvasState> emit,
+  ) {
+    final details = event.details;
+    emit(
+      state.copyWith(
+        position: details.position,
       ),
     );
   }
