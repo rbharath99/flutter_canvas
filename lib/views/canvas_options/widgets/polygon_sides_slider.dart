@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_canvas/views/canvas_options/cubit/polygon_sides_cubit.dart';
+import 'package:flutter_canvas/views/canvas_options/cubit/canvas_options_cubit.dart';
 
 class PolygonSidesSlider extends StatelessWidget {
   const PolygonSidesSlider({super.key});
@@ -8,7 +8,7 @@ class PolygonSidesSlider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final polygonSides = context.select(
-      (PolygonSidesCubit polygonSidesCubit) => polygonSidesCubit.state,
+      (CanvasOptionsCubit cubit) => cubit.state.polygonSides,
     );
     return Column(
       children: [
@@ -22,7 +22,7 @@ class PolygonSidesSlider extends StatelessWidget {
               divisions: 7,
               value: polygonSides.toDouble(),
               onChanged: (value) {
-                context.read<PolygonSidesCubit>().updatePolygonSides(
+                context.read<CanvasOptionsCubit>().updatePolygonSides(
                       value.toInt(),
                     );
               },

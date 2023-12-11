@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_canvas/views/canvas_options/cubit/size_cubit.dart';
+import 'package:flutter_canvas/views/canvas_options/cubit/canvas_options_cubit.dart';
 
 class SizeSlider extends StatelessWidget {
   const SizeSlider({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final toolSize = context.select((SizeCubit sizeCubit) => sizeCubit.state);
+    final strokeSize =
+        context.select((CanvasOptionsCubit cubit) => cubit.state.strokeSize);
+    final eraserSize =
+        context.select((CanvasOptionsCubit cubit) => cubit.state.eraserSize);
     return Column(
       children: [
         const Text('Size'),
@@ -15,9 +18,9 @@ class SizeSlider extends StatelessWidget {
           children: [
             const Text('Stroke Size'),
             Slider(
-              value: toolSize.strokeSize,
+              value: strokeSize,
               onChanged: (value) {
-                context.read<SizeCubit>().updateSize('strokeSize', value);
+                context.read<CanvasOptionsCubit>().updateStrokeSize(value);
               },
               max: 100,
             ),
@@ -27,9 +30,9 @@ class SizeSlider extends StatelessWidget {
           children: [
             const Text('Eraser Size'),
             Slider(
-              value: toolSize.eraserSize,
+              value: eraserSize,
               onChanged: (value) {
-                context.read<SizeCubit>().updateSize('eraserSize', value);
+                context.read<CanvasOptionsCubit>().updateEraserSize(value);
               },
               max: 100,
             ),

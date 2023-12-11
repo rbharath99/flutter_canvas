@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_canvas/enum/tool_type.dart';
-import 'package:flutter_canvas/views/canvas_options/cubit/tool_cubit.dart';
+import 'package:flutter_canvas/views/canvas_options/cubit/canvas_options_cubit.dart';
 
 class ToolBox extends StatelessWidget {
   const ToolBox({
@@ -21,7 +21,7 @@ class ToolBox extends StatelessWidget {
       cursor: SystemMouseCursors.click,
       child: GestureDetector(
         onTap: () {
-          context.read<ToolCubit>().updateToolType(toolType);
+          context.read<CanvasOptionsCubit>().updateToolType(toolType);
         },
         child: Container(
           height: 35,

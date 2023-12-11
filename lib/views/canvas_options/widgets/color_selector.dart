@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_canvas/views/canvas_options/cubit/color_cubit.dart';
+import 'package:flutter_canvas/views/canvas_options/cubit/canvas_options_cubit.dart';
 import 'package:flutter_canvas/views/canvas_options/widgets/widgets.dart';
 
 class ColorSelector extends StatelessWidget {
@@ -9,7 +9,7 @@ class ColorSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final selectedColor =
-        context.select((ColorCubit colorCubit) => colorCubit.state);
+        context.select((CanvasOptionsCubit cubit) => cubit.state.color);
     final colors = [Colors.black, Colors.white, ...Colors.primaries];
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -24,7 +24,7 @@ class ColorSelector extends StatelessWidget {
                 cursor: SystemMouseCursors.click,
                 child: GestureDetector(
                   onTap: () {
-                    context.read<ColorCubit>().selectColor(color);
+                    context.read<CanvasOptionsCubit>().selectColor(color);
                   },
                   child: Container(
                     height: 25,
