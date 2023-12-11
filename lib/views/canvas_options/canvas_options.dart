@@ -20,6 +20,7 @@ class CanvasOptions extends StatelessWidget {
             PolygonSidesSlider(),
             ColorSelector(),
             SizeSlider(),
+            Zoom(),
             UndoRedo(),
           ],
         ),

@@ -25,76 +25,80 @@ class _CurrentSketchState extends State<CurrentSketch> {
     final polygonSides = context.select(
       (PolygonSidesCubit polygonSidesCubit) => polygonSidesCubit.state,
     );
-    return Listener(
-      onPointerDown: (details) {
-        setState(() {
-          final offset = Offset(
-            details.localPosition.dx,
-            details.localPosition.dy,
-          );
-          drawing = Drawing(
-            offset: offset,
-            paint: Paint()
-              ..color = selectedColor
-              ..isAntiAlias = true
-              ..strokeWidth = toolSize.strokeSize
-              ..strokeCap = StrokeCap.round
-              ..style = PaintingStyle.stroke,
-            toolType: selectedTool,
-            sides: polygonSides,
-            points: [offset],
-          );
-        });
-      },
-      onPointerMove: (details) {
-        setState(() {
-          final offset = Offset(
-            details.localPosition.dx,
-            details.localPosition.dy,
-          );
-          final newPoints = List<Offset>.from(drawing.points)..add(offset);
-          drawing = Drawing(
-            offset: offset,
-            paint: Paint()
-              ..color = selectedColor
-              ..isAntiAlias = true
-              ..strokeWidth = toolSize.strokeSize
-              ..strokeCap = StrokeCap.round
-              ..style = PaintingStyle.stroke,
-            toolType: selectedTool,
-            sides: polygonSides,
-            points: newPoints,
-          );
-        });
-      },
-      onPointerUp: (details) {
-        setState(() {
-          final offset = Offset(
-            details.localPosition.dx,
-            details.localPosition.dy,
-          );
-          context.read<CanvasBloc>().add(UpdateAllDrawings(drawing: drawing));
-          drawing = Drawing(
-            offset: offset,
-            paint: Paint()
-              ..color = selectedColor
-              ..isAntiAlias = true
-              ..strokeWidth = toolSize.strokeSize
-              ..strokeCap = StrokeCap.round
-              ..style = PaintingStyle.stroke,
-            toolType: selectedTool,
-            sides: polygonSides,
-            points: [],
-          );
-        });
-      },
-      child: RepaintBoundary(
-        child: SizedBox(
-          width: double.maxFinite,
-          height: double.maxFinite,
-          child: CustomPaint(
-            painter: SketchPainter(
-              drawings: [drawing],
+    final zoomFactor = context.select((ZoomCubit zoomCubit) => zoomCubit.state);
+    return Transform.scale(
+      scale: zoomFactor,
+      child: Listener(
+        onPointerDown: (details) {
+          setState(() {
+            final offset = Offset(
+              details.localPosition.dx,
+              details.localPosition.dy,
+            );
+            drawing = Drawing(
+              offset: offset,
+              paint: Paint()
+                ..color = selectedColor
+                ..isAntiAlias = true
+                ..strokeWidth = toolSize.strokeSize
+                ..strokeCap = StrokeCap.round
+                ..style = PaintingStyle.stroke,
+              toolType: selectedTool,
+              sides: polygonSides,
+              points: [offset],
+            );
+          });
+        },
+        onPointerMove: (details) {
+          setState(() {
+            final offset = Offset(
+              details.localPosition.dx,
+              details.localPosition.dy,
+            );
+            final newPoints = List<Offset>.from(drawing.points)..add(offset);
+            drawing = Drawing(
+              offset: offset,
+              paint: Paint()
+                ..color = selectedColor
+                ..isAntiAlias = true
+                ..strokeWidth = toolSize.strokeSize
+                ..strokeCap = StrokeCap.round
+                ..style = PaintingStyle.stroke,
+              toolType: selectedTool,
+              sides: polygonSides,
+              points: newPoints,
+            );
+          });
+        },
+        onPointerUp: (details) {
+          setState(() {
+            final offset = Offset(
+              details.localPosition.dx,
+              details.localPosition.dy,
+            );
+            context.read<CanvasBloc>().add(UpdateAllDrawings(drawing: drawing));
+            drawing = Drawing(
+              offset: offset,
+              paint: Paint()
+                ..color = selectedColor
+                ..isAntiAlias = true
+                ..strokeWidth = toolSize.strokeSize
+                ..strokeCap = StrokeCap.round
+                ..style = PaintingStyle.stroke,
+              toolType: selectedTool,
+              sides: polygonSides,
+              points: [],
+            );
+          });
+        },
+        child: RepaintBoundary(
+          child: SizedBox(
+            width: double.maxFinite,
+            height: double.maxFinite,
+            child: CustomPaint(
+              painter: SketchPainter(
+                drawings: [drawing],
+              ),
             ),
           ),
         ),
