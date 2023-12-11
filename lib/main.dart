@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_canvas/views/canvas_options/cubit/cubits.dart';
+import 'package:flutter_canvas/views/canvas_options/cubit/canvas_options_cubit.dart';
 import 'package:flutter_canvas/views/drawing_canvas/bloc/canvas_bloc.dart';
 import 'package:flutter_canvas/views/views.dart';
 
@@ -15,19 +15,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => ColorCubit(),
-        ),
-        BlocProvider(
-          create: (context) => SizeCubit(),
-        ),
-        BlocProvider(
-          create: (context) => ToolCubit(),
-        ),
-        BlocProvider(
-          create: (context) => PolygonSidesCubit(),
-        ),
-        BlocProvider(
-          create: (context) => ZoomCubit(),
+          create: (context) => CanvasOptionsCubit(),
         ),
         BlocProvider(
           create: (context) => CanvasBloc(),

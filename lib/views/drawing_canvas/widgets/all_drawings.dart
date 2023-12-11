@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_canvas/utils/sketch_painter.dart';
-import 'package:flutter_canvas/views/canvas_options/cubit/cubits.dart';
+import 'package:flutter_canvas/views/canvas_options/cubit/canvas_options_cubit.dart';
 import 'package:flutter_canvas/views/drawing_canvas/bloc/canvas_bloc.dart';
 
 class AllSketches extends StatelessWidget {
@@ -11,7 +11,8 @@ class AllSketches extends StatelessWidget {
   Widget build(BuildContext context) {
     final allDrawings =
         context.select((CanvasBloc canvasBloc) => canvasBloc.state.allDrawings);
-    final zoomFactor = context.select((ZoomCubit zoomCubit) => zoomCubit.state);
+    final zoomFactor =
+        context.select((CanvasOptionsCubit cubit) => cubit.state.zoomFactor);
     return Transform.scale(
       scale: zoomFactor,
       child: Listener(

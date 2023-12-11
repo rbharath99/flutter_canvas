@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_canvas/enum/tool_type.dart';
 import 'package:flutter_canvas/models/models.dart';
 import 'package:flutter_canvas/utils/sketch_painter.dart';
-import 'package:flutter_canvas/views/canvas_options/cubit/cubits.dart';
+import 'package:flutter_canvas/views/canvas_options/cubit/canvas_options_cubit.dart';
 import 'package:flutter_canvas/views/drawing_canvas/bloc/canvas_bloc.dart';
 
 class CurrentSketch extends StatefulWidget {
@@ -18,14 +19,18 @@ class _CurrentSketchState extends State<CurrentSketch> {
   @override
   Widget build(BuildContext context) {
     final selectedColor =
-        context.select((ColorCubit colorCubit) => colorCubit.state);
+        context.select((CanvasOptionsCubit cubit) => cubit.state.color);
     final selectedTool =
-        context.select((ToolCubit toolCubit) => toolCubit.state);
-    final toolSize = context.select((SizeCubit sizeCubit) => sizeCubit.state);
+        context.select((CanvasOptionsCubit cubit) => cubit.state.toolType);
+    final strokeSize =
+        context.select((CanvasOptionsCubit cubit) => cubit.state.strokeSize);
+    final eraserSize =
+        context.select((CanvasOptionsCubit cubit) => cubit.state.eraserSize);
     final polygonSides = context.select(
-      (PolygonSidesCubit polygonSidesCubit) => polygonSidesCubit.state,
+      (CanvasOptionsCubit cubit) => cubit.state.polygonSides,
     );
-    final zoomFactor = context.select((ZoomCubit zoomCubit) => zoomCubit.state);
+    final zoomFactor =
+        context.select((CanvasOptionsCubit cubit) => cubit.state.zoomFactor);
     return Transform.scale(
       scale: zoomFactor,
       child: Listener(
@@ -40,7 +45,8 @@ class _CurrentSketchState extends State<CurrentSketch> {
               paint: Paint()
                 ..color = selectedColor
                 ..isAntiAlias = true
-                ..strokeWidth = toolSize.strokeSize
+                ..strokeWidth =
+                    selectedTool != ToolType.eraser ? strokeSize : eraserSize
                 ..strokeCap = StrokeCap.round
                 ..style = PaintingStyle.stroke,
               toolType: selectedTool,
@@ -61,7 +67,8 @@ class _CurrentSketchState extends State<CurrentSketch> {
               paint: Paint()
                 ..color = selectedColor
                 ..isAntiAlias = true
-                ..strokeWidth = toolSize.strokeSize
+                ..strokeWidth =
+                    selectedTool != ToolType.eraser ? strokeSize : eraserSize
                 ..strokeCap = StrokeCap.round
                 ..style = PaintingStyle.stroke,
               toolType: selectedTool,
@@ -82,7 +89,8 @@ class _CurrentSketchState extends State<CurrentSketch> {
               paint: Paint()
                 ..color = selectedColor
                 ..isAntiAlias = true
-                ..strokeWidth = toolSize.strokeSize
+                ..strokeWidth =
+                    selectedTool != ToolType.eraser ? strokeSize : eraserSize
                 ..strokeCap = StrokeCap.round
                 ..style = PaintingStyle.stroke,
               toolType: selectedTool,

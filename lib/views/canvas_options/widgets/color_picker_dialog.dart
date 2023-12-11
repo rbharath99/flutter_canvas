@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_canvas/views/canvas_options/cubit/color_cubit.dart';
+import 'package:flutter_canvas/views/canvas_options/cubit/canvas_options_cubit.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 class ColorPickerDialog extends StatelessWidget {
@@ -11,14 +11,14 @@ class ColorPickerDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final selectedColor =
-        context.select((ColorCubit colorCubit) => colorCubit.state);
+        context.select((CanvasOptionsCubit cubit) => cubit.state.color);
     return AlertDialog(
       title: const Text('Pick A Color!'),
       content: SingleChildScrollView(
         child: ColorPicker(
           pickerColor: selectedColor,
           onColorChanged: (newColor) {
-            context.read<ColorCubit>().selectColor(newColor);
+            context.read<CanvasOptionsCubit>().selectColor(newColor);
           },
         ),
       ),
@@ -26,7 +26,7 @@ class ColorPickerDialog extends StatelessWidget {
         ElevatedButton(
           child: const Text('Done'),
           onPressed: () {
-            context.read<ColorCubit>().selectColor(selectedColor);
+            context.read<CanvasOptionsCubit>().selectColor(selectedColor);
             Navigator.of(context).pop();
           },
         ),
